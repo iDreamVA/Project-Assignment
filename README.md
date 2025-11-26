@@ -1,8 +1,4 @@
 # Project-Assignment
-## Group Members
-   1. e
-   2. e
-   3. e
 ## Project Description
    1. Spanning Tree using DFS or BFS
    2. Dijkstra’s Algorithm
