@@ -124,3 +124,37 @@
     print(f"Edges (u, v, weight):{k_mst_edges}")
     return k_mst_edges, total_weight  # คืนค่า MST และน้ำหนักรวม
 ```
+### Prim’s algorithm
+#### โค้ดฟังก์ชัน
+``` python
+   def prims_mst(graph_obj):
+    if not graph_obj.adj: #เช็คว่าถ้าไม่มีค่าในกราฟให้ return ค่า 0
+        return 0, []
+
+    start_node = next(iter(graph_obj.adj)) #ใช้ไล่ทีละตัว ขยับทีละค่า
+    min_heap = [] #เก็บค่าทั้งหมด โดยเรียงจากค่า weight จากน้อยไปมาก
+    in_mst = {start_node} #ใช้เก็บจุด มีไว้เผื่อเช็ค
+    p_mst_edges = [] #เก็บค่าทั้งหมด ที่เลือกไว้ mst
+    mst_weight = 0 #เก็บค่าน้ำหนักรวมของ mst
+
+    for neighbor, weight in graph_obj.adj.get(start_node, []): #เช็คว่ามีตัวซ้ำหรือไม่ เพื่อลดการทำงานซับซ้อน
+        if neighbor not in in_mst:
+            heapq.heappush(min_heap, (weight, neighbor, start_node)) #เรียงค่า weight จากน้อยไปมากและนำไปใส่ใน min_heap
+
+    while min_heap and len(in_mst) < len(graph_obj.adj): #เช็คว่ามีจุดและขอบครบทั้งหมดหรือไม่ ถ้ายังไม่ครบให้วนต่อไป
+        weight, u, v = heapq.heappop(min_heap) #เลือกขอบที่มีค่าน้อยที่สุดออกมาก่อน
+        if u in in_mst: #ถ้าจุด (ค่า u) อยู่ใน in_mst แล้วให้ข้ามขั้นตอนอื่นๆที่อยู่ใน while ไป
+            continue
+
+        in_mst.add(u) #เพิ่มจุด(u)ที่เลือก โดยการเพิ่มลงไปใน in_mst
+        mst_weight += weight #บวกค่า weight ที่เลือก ลงค่า mst_weight
+        p_mst_edges.append((v, u, weight)) #เก็บค่าขอบที่เลือก โดยการเพิ่มค่าลงไปใน p_mst_edges
+
+        for neighbor, edge_weight in graph_obj.adj.get(u, []): #ใช้เช็คเผื่อไม่ให้เกิดวงจร
+            if neighbor not in in_mst:
+                heapq.heappush(min_heap, (edge_weight, neighbor, u)) #เมื่อเพิ่มข้อมูลเข้าไปก็จะเรียงใหม่ทันที ตามค่า edge_weight จากน้อยไปมาก
+
+    print("\n--- Prim's MST ---")
+    print("Total Weight:", mst_weight)
+    print("Edges (u, v, weight):", p_mst_edges)
+    return mst_weight, p_mst_edges #คืนค่า
