@@ -227,7 +227,7 @@
     print(f"Edges (u, v, weight):{k_mst_edges}")
     return k_mst_edges, total_weight  # คืนค่า MST และน้ำหนักรวม
 ```
-### Dijkstra
+### Draw Graph
 #### โค้ดฟังก์ชัน
 ``` python
   def draw_graph(graph_object):
